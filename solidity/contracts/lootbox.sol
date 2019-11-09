@@ -6,38 +6,42 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Burnable.sol";
 
 contract LootBox is ERC721Full, Ownable, ERC721Burnable{
   
-  uint public numberOfTickets; 
-  uint price = 1 ; //1 ETH? 
-  address public enigmaAddress;
+  uint public _numberOfTickets;
+  uint public _maxTickets; 
+  uint _price = 1 ether; //1 ETH? 
+  address public _enigmaAddress;
 
   //as part of the constructor? --> need to mint 108 tokens
-  constructor(address _enigma) ERC721Full("LootBox", "LBX") public {
-    enigmaAddress = _enigma;
-
+  constructor(uint maxTickets) ERC721Full("LootBox", "LBX") public {
+    _maxTickets = maxTickets;
   }
 
-  function mint() public payable onlyOwner{
-    require(msg.value == price); 
+  function connectEnigma(address enigma) public onlyOwner {
+    _enigmaAddress = enigma;
+  }
+
+  function mint() public payable {
+    require(msg.value == _price); 
 
     //increment token id
-    numberOfTickets = numberOfTickets + 1;
+    _numberOfTickets = _numberOfTickets + 1;
 
     //tokenId = ticket number
-     _mint(msg.sender, numberOfTickets);
+     _safeMint(msg.sender, _numberOfTickets);
   }
-    
-    
   
-  function openLootBox(uint256 tokenId, uint256 payoutAmount, address payable tokenOwner) public{
+  function openLootBox(uint256 tokenId, uint256 payoutAmount) public {
 
     //require only enigma
-    require(msg.sender == enigmaAddress);
+    require(msg.sender == _enigmaAddress);
 
-    burn(tokenId);
+    // ugly necessary payable cast... sigh
+    address payable currentOwner = address(uint160(ownerOf(tokenId)));
 
-    tokenOwner.transfer(payoutAmount);
+    // owner is reset to burn address after burn
+    _burn(tokenId);
 
+    currentOwner.transfer(payoutAmount);
   }
     
-//options to white list the secure smart contract's address: deploy egnima contract first, pass the egnima contract's address to ethereum contract    
 }
