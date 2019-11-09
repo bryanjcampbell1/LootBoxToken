@@ -8,33 +8,34 @@ contract LootBox is ERC721Full, Ownable, ERC721Burnable{
   
   uint public numberOfTickets; 
   uint price = 1 ; //1 ETH? 
+  address public enigmaAddress;
 
   //as part of the constructor? --> need to mint 108 tokens
-  constructor() ERC721Full("LootBox", "LBX") public {
-
-
-
+  constructor(address _enigma) ERC721Full("LootBox", "LBX") public {
+    enigmaAddress = _enigma;
 
   }
 
-  function mint(address to, uint256 tokenId) public payable {
+  function mint() public payable onlyOwner{
     require(msg.value == price); 
 
     //increment token id
     numberOfTickets = numberOfTickets + 1;
 
     //tokenId = ticket number
-     _mint(to, numberOfTickets);
+     _mint(msg.sender, numberOfTickets);
   }
     
     
   
-  // This function gets called from enigma
-  // Problem: the burn() function requires _isApprovedOrOwner(_msgSender(), tokenId) but enigma is caling the function 
+  function openLootBox(uint256 tokenId, uint256 payoutAmount, address payable tokenOwner) public{
 
-  //1) Have the front end trigger Eth and enigma contract calls
-  function openLootBox(uint256 tokenId) public{
-     burn(tokenId);
+    //require only enigma
+    require(msg.sender == enigmaAddress);
+
+    burn(tokenId);
+
+    tokenOwner.transfer(payoutAmount);
 
   }
     
