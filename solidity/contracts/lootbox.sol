@@ -39,5 +39,5 @@ contract LootBox is ERC721Full, Ownable, ERC721Burnable{
 
   }
     
-// options to white list the secure smart contract's address: deploy egnima contract first, pass the egnima contract's address to ethereum contract    
+//options to white list the secure smart contract's address: deploy egnima contract first, pass the egnima contract's address to ethereum contract    
 }
