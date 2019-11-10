@@ -8,10 +8,6 @@ use eng_wasm::*;
 use eng_wasm_derive::pub_interface;
 use eng_wasm_derive::eth_contract;
 
-//use eng_wasm::String;
-//use rustc_hex::ToHex;
-
-
 #[eth_contract("ABI.json")]
 struct EthContract;
 
@@ -23,29 +19,35 @@ pub trait ContractInterface{
 
 pub struct Contract;
 
+//right now hard code 20 prizes
+let prizes = vec![0.04, 0.06, 0.04, 0.06, 0.04,0.06, 0.04, 0.06, 0.03, 0.07,0.03, 0.07, 0.0, 0.1, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0,0.2, 0.0, 0.0, 0.0, 0.2];
+
 impl ContractInterface for Contract {
 
+    //create a vector to hold ticket payouts 
     
     fn burnToken(tokenID: U256,totalETH: U256, eth_user_addr: H160, eth_contact_addr: H160) {
 
-
-    	//require( msg.sender == owner of token we are burning)
-
-    	//need to call contract to learn the following
-    	//i) what is the contract balance
-    	//ii) who owns the token
     	let c = EthContract::new(&eth_contact_addr.to_string());
     	
-    	let token_owner = c.ownerOf(tokenID); //?
+
+        let result: U256 = Rand::gen();
+        let prize_index = result % prizes.len(); 
+
+        let payout_amount: &i32 = &v[prize_index];
+
+        //use assert_eq!();
+        /*
+        let token_owner = c.ownerOf(tokenID); //?
+
+        if &token_owner.to_string() == &eth_user_addr.to_string() {
+            c.openLootBox(tokenID, payout_amount);
+        }
+        */
+
+        c.openLootBox(tokenID, payout_amount);
 
 
-    	if &token_owner.to_string() == &eth_user_addr.to_string() {
-    		let payout_amount: U256 = Rand::gen(); 
-        	c.openLootBox(tokenID, payout_amount);
-    	}
-	    else {
-	        //fuck off
-	    }
 
     }
 
