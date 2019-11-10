@@ -1,4 +1,4 @@
-import SimpleStorage from "./contracts/SimpleStorage.json"
+import LootBox from "./contracts/LootBox.json"
 import Web3 from "web3"
 
 const options = {
@@ -6,9 +6,9 @@ const options = {
     block: false,
     customProvider: new Web3("ws://localhost:9545"),
   },
-  contracts: [SimpleStorage],
+  contracts: [LootBox],
   polls: {
-    accounts: 1500,
+    accounts: 1000,
   },
 }
 

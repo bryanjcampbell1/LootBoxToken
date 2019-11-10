@@ -10,7 +10,7 @@ contract LootBox is ERC721Full, Ownable, ERC721Burnable{
   uint public _maxTickets; 
   uint public _price = 1 ether; //1 ETH? 
   address public _enigmaAddress;
-
+  mapping (address => uint[]) public _idTracker;
   //as part of the constructor? --> need to mint 108 tokens
   constructor(uint maxTickets) ERC721Full("LootBox", "LBX") public {
     _maxTickets = maxTickets;
@@ -28,7 +28,9 @@ contract LootBox is ERC721Full, Ownable, ERC721Burnable{
     _numberOfTickets = _numberOfTickets + 1;
 
     //tokenId = ticket number
-     _safeMint(msg.sender, _numberOfTickets);
+    _safeMint(msg.sender, _numberOfTickets);
+
+    _idTracker[msg.sender].push(_numberOfTickets);
   }
   
   function openLootBox(uint256 tokenId, uint256 payoutAmount) public {
@@ -41,8 +43,30 @@ contract LootBox is ERC721Full, Ownable, ERC721Burnable{
 
     // owner is reset to burn address after burn
     _burn(tokenId);
+    delArrayElem(_idTracker[currentOwner], tokenId);
 
     currentOwner.transfer(payoutAmount);
+
   }
     
+  // HELPER
+  function delArrayElem(uint[] storage array, uint elem) private {
+    uint idx;
+    bool found;
+
+    for (uint i = 0; i < array.length; i++) {
+      if (array[i] == elem) {
+        idx = i;
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) return;
+
+    if (array.length > 1) {
+      array[idx] = array[array.length-1];
+    }
+    array.length--;
+  }
 }
