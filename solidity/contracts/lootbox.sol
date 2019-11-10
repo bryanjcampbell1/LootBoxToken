@@ -8,7 +8,7 @@ contract LootBox is ERC721Full, Ownable, ERC721Burnable{
   
   uint public _numberOfTickets;
   uint public _maxTickets; 
-  uint _price = 1 ether; //1 ETH? 
+  uint public _price = 1 ether; //1 ETH? 
   address public _enigmaAddress;
 
   //as part of the constructor? --> need to mint 108 tokens
@@ -22,6 +22,7 @@ contract LootBox is ERC721Full, Ownable, ERC721Burnable{
 
   function mint() public payable {
     require(msg.value == _price); 
+    require(_numberOfTickets < _maxTickets);
 
     //increment token id
     _numberOfTickets = _numberOfTickets + 1;
