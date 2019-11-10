@@ -22,9 +22,9 @@ export default () => (
       }
 
       const { accounts } = drizzleState;
+
       return (
         <div className="App">
-        {console.log()}
           <div>
             <img src={logo} alt="drizzle-logo" />
             <h1>Lootbox UI</h1>
@@ -120,11 +120,32 @@ export default () => (
             <ContractForm
               drizzle={drizzle}
               drizzleState={drizzleState}
-              contract="TutorialToken"
+              contract="LootBox"
               method="openLootBox"
               labels={["LBX id"]}
             />
-            <h3>Transfer Event List or Current Active Account token Id holding list via mapping</h3>
+            <h3>Your First Box Id</h3>
+            <ContractData
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              contract="LootBox"
+              method="_idTracker"
+              methodArgs={[accounts[0], 0]}
+              render={displayData => (
+                <span>{displayData ? displayData : 'None, buy one first!'}</span>
+              )}
+            />
+            <h3>Total Boxes</h3>
+            <ContractData
+              drizzle={drizzle}
+              drizzleState={drizzleState}
+              contract="LootBox"
+              method="balanceOf"
+              methodArgs={[accounts[0]]}
+              render={displayData => (
+                <span>{displayData ? displayData : 'None, buy one first!'}</span>
+              )}
+            />
           </div>
         </div>
       );

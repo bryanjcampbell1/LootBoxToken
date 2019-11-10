@@ -5,12 +5,6 @@ import logo from "./logo.png";
 
 const { AccountData, ContractData, ContractForm } = newContextComponents;
 
-const myRender = data => (
-  <>
-    Value=<b>{data}</b>
-  </>
-);
-
 export default () => (
   <DrizzleContext.Consumer>
     {drizzleContext => {

@@ -9,7 +9,8 @@ npm i -g truffle ganache-cli lerna yarn
 1. First compile and build the contracts
 
 ```sh
-cd solidity`
+cd solidity
+npm i
 truffle build
 ```
 
@@ -35,6 +36,7 @@ yarn ganache:deploy
 5. start and serve ui on localhost:3001 and supporting providers
 
 ```sh
+export SKIP_PREFLIGHT_CHECK=true
 yarn serve:ui
 ```
 
