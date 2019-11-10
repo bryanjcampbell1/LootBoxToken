@@ -1,0 +1,1 @@
+/Users/bryancampbell/Desktop/enigma_practice/secret_contracts/simple_addition/target/wasm32-unknown-unknown/release/contract.wasm: /Users/bryancampbell/Desktop/enigma_practice/secret_contracts/simple_addition/src/lib.rs
