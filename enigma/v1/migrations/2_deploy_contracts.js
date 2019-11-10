@@ -103,4 +103,16 @@ module.exports = async function(deployer, network, accounts) {
   };
   const address = await deploySecretContract(config);
   console.log(`Secret Contract "${config.filename}" deployed at Enigma address: ${address}`);
+
+  const configlootbox = {
+    filename: 'lootbox.wasm',
+    fn: 'construct()',
+    args: [],
+    gasLimit: 1000000,
+    gasPrice: utils.toGrains(1),
+    from: accounts[0]
+  };
+  const addresslootbox = await deploySecretContract(configlootbox);
+  console.log(`Secret Contract "${configlootbox.filename}" deployed at Enigma address: ${addresslootbox}`);
+
 };
